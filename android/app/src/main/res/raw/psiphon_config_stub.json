@@ -1,0 +1,12 @@
+{
+  "PropagationChannelId" : "",
+  "SponsorId" : "",
+  "RemoteServerListUrl" : "https://example.com/server_list",
+  "RemoteServerListSignaturePublicKey" : "",
+  "TunnelPoolSize" : 1,
+  "EstablishTunnelTimeoutSeconds" : 0,
+  "TunnelWholeDevice" : 0,
+  "EmitBytesTransferred" : true,
+  "EmitDiagnosticNotices": true,
+  "RemoteServerListDownloadFilename" : "server_list_compressed"
+}
