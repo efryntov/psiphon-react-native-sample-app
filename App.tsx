@@ -10,9 +10,10 @@ const NewModuleButton = () => {
 
   useEffect(() => {
     const emitter = new NativeEventEmitter(PsiphonNativeModule)
-    const subscription = emitter.addListener('PsiphonEvent', (data) => {
-      console.log('PsiphonEvent', data);
-      setPsiphonConnectionStateText(data.PsiphonConnectionState);
+    const subscription = emitter.addListener('PsiphonConnectionState', (data) => {
+      console.log(data);
+      if (data && data.state)
+        setPsiphonConnectionStateText(data.state);
     });
   }, []);
 
@@ -22,19 +23,26 @@ const NewModuleButton = () => {
       let ipinfo = await myFetch("https://ipinfo.io/json")
       setIpInfoData(ipinfo);
     } catch (error) {
-      let errorMessage = "Failed to do something exceptional";
+      let errorMessage = "Error fetching IP info";
       if (error instanceof Error) {
-
-        errorMessage = error.message;
+        errorMessage = errorMessage + ": " + error.message;
       }
       setIpInfoData(errorMessage);
     }
   };
 
-  const onSwitchChange = (value: boolean) => {
+  const onSwitchChange = async (value: boolean) => {
     setUsePsiphon(value);
     // Start or stop Psiphon right away on switch change
-    value ? PsiphonNativeModule.startPsiphon() : PsiphonNativeModule.stopPsiphon();
+    if (value) {
+      try {
+        await PsiphonNativeModule.startPsiphon();
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      PsiphonNativeModule.stopPsiphon();
+    }
   }
 
   const myFetch = async (url: string) => {
