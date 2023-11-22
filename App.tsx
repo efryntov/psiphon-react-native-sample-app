@@ -9,7 +9,7 @@ const NewModuleButton = () => {
   const [usePsiphon, setUsePsiphon] = useState(false);
 
   useEffect(() => {
-    const emitter = new NativeEventEmitter(PsiphonNativeModule)
+    const emitter = new NativeEventEmitter(PsiphonNativeModule);
     const subscription = emitter.addListener('PsiphonConnectionState', (data) => {
       console.log(data);
       if (data && data.state)
@@ -19,17 +19,13 @@ const NewModuleButton = () => {
 
   const onPress = async () => {
     setIpInfoData("Fetching IP info...");
-    try {
-      let ipinfo = await myFetch("https://ipinfo.io/json")
-      setIpInfoData(ipinfo);
-    } catch (error) {
-      let errorMessage = "Error fetching IP info";
-      if (error instanceof Error) {
-        errorMessage = errorMessage + ": " + error.message;
-      }
-      setIpInfoData(errorMessage);
-    }
-  };
+
+    fetch("https://ipinfo.io/json").then((response) => response.text()).then((data) => {
+      setIpInfoData(data);
+    }).catch((error) => {
+      setIpInfoData("Error fetching IP info");
+    });
+  }
 
   const onSwitchChange = async (value: boolean) => {
     setUsePsiphon(value);
@@ -45,10 +41,6 @@ const NewModuleButton = () => {
     }
   }
 
-  const myFetch = async (url: string) => {
-    // native fetch params: method: string, url: string, body: string, usePsiphon: boolean
-    return PsiphonNativeModule.fetch("GET", url, null, usePsiphon);
-  }
 
   return (
     <View style={styles.container}>

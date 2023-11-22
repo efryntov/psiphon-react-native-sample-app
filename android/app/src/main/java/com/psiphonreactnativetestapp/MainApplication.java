@@ -61,5 +61,8 @@ public class MainApplication extends Application implements ReactApplication {
             DefaultNewArchitectureEntryPoint.load();
         }
         ReactNativeFlipper.initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
+
+        // Provide custom OkHttpClientBuilder to NetworkingModule to enable proxying through Psiphon
+        PsiphonHelper.getInstance(getApplicationContext()).setPsiphonEnabledOkHttpClientBuilder();
     }
 }

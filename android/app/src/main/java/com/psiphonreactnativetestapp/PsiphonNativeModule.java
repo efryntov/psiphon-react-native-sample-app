@@ -9,12 +9,14 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.module.annotations.ReactModule;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 
+@ReactModule(name = PsiphonNativeModule.NAME)
 public class PsiphonNativeModule extends ReactContextBaseJavaModule {
     public static final String NAME = "PsiphonNativeModule";
 
@@ -26,7 +28,7 @@ public class PsiphonNativeModule extends ReactContextBaseJavaModule {
 
     public PsiphonNativeModule(@Nullable ReactApplicationContext context) {
         super(context);
-        psiphonHelper = PsiphonHelper.getInstance(context);
+        psiphonHelper = PsiphonHelper.getInstance(getReactApplicationContext().getApplicationContext());
     }
 
     @NonNull
@@ -49,12 +51,6 @@ public class PsiphonNativeModule extends ReactContextBaseJavaModule {
     public synchronized void stopPsiphon() {
         psiphonHelper.stopPsiphon();
     }
-
-    @ReactMethod
-    public void fetch(String method, String url, String body, boolean usePsiphon, Promise promise) {
-        psiphonHelper.fetch(method, url, body, usePsiphon, promise);
-    }
-
 
     @ReactMethod
     public void addListener(String eventName) {
