@@ -38,9 +38,9 @@ public class PsiphonNativeModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public synchronized void startPsiphon(Promise promise) {
+    public synchronized void startPsiphon(String config, Promise promise) {
         try {
-            psiphonHelper.startPsiphon();
+            psiphonHelper.startPsiphon(config);
             promise.resolve(null);
         } catch (RuntimeException e) {
             promise.reject(e);

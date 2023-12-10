@@ -29,7 +29,6 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
 public class PsiphonHelper implements PsiphonTunnel.HostService {
-    private static final int TIMEOUT_SECONDS = 30;
     // Singleton instance
     private static PsiphonHelper instance;
 
@@ -56,6 +55,7 @@ public class PsiphonHelper implements PsiphonTunnel.HostService {
     private int httpProxyPort = -1;
     private final PsiphonTunnel psiphonTunnel;
     private final AtomicBoolean isPsiphonStopping = new AtomicBoolean(false);
+    private String psiphonConfig;
     private CountDownLatch tunnelCountDownLatch;
     private Thread tunnelThread;
 
@@ -84,16 +84,10 @@ public class PsiphonHelper implements PsiphonTunnel.HostService {
 
     @Override
     public String getPsiphonConfig() {
-        try {
-            JSONObject config = new JSONObject(
-                    readInputStreamToString(
-                            appContext.getResources().openRawResource(R.raw.psiphon_config)));
-
-            return config.toString();
-
-        } catch (IOException | JSONException e) {
-            throw new RuntimeException(e);
+        if (psiphonConfig == null) {
+            throw new IllegalStateException("Psiphon configuration not set.");
         }
+        return psiphonConfig;
     }
 
     // Other PsiphonTunnel.HostService methods
@@ -126,7 +120,8 @@ public class PsiphonHelper implements PsiphonTunnel.HostService {
         connectionStateBehaviorRelay.accept(PsiphonState.WAITING_FOR_NETWORK);
     }
 
-    void startPsiphon() {
+    void startPsiphon(String config) {
+        psiphonConfig = config;
         if (tunnelThread == null) {
             tunnelCountDownLatch = new CountDownLatch(1);
             tunnelThread = new Thread(this::startPsiphonTunnel);
@@ -208,15 +203,5 @@ public class PsiphonHelper implements PsiphonTunnel.HostService {
             tunnelCountDownLatch = null;
             connectionStateBehaviorRelay.accept(PsiphonState.STOPPED);
         }
-    }
-
-    private static String readInputStreamToString(InputStream inputStream) throws IOException {
-        ByteArrayOutputStream result = new ByteArrayOutputStream();
-        byte[] buffer = new byte[1024];
-        int length;
-        while ((length = inputStream.read(buffer)) != -1) {
-            result.write(buffer, 0, length);
-        }
-        return result.toString(StandardCharsets.UTF_8.name());
     }
 }
