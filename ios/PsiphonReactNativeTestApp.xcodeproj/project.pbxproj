@@ -12,6 +12,11 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		4474894B2B1F794800ABCFA7 /* PsiphonTunnel.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4474894A2B1F794700ABCFA7 /* PsiphonTunnel.xcframework */; };
+		4474894C2B1F794800ABCFA7 /* PsiphonTunnel.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4474894A2B1F794700ABCFA7 /* PsiphonTunnel.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		447489512B1F7B8E00ABCFA7 /* PsiphonModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 447489502B1F7B8E00ABCFA7 /* PsiphonModule.m */; };
+		447489542B1F7BC000ABCFA7 /* PsiphonNativeModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 447489532B1F7BC000ABCFA7 /* PsiphonNativeModule.swift */; };
+		447489562B1F7BE200ABCFA7 /* PsiphonTunnelDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 447489552B1F7BE200ABCFA7 /* PsiphonTunnelDelegate.swift */; };
 		7699B88040F8A987B510C191 /* libPods-PsiphonReactNativeTestApp-PsiphonReactNativeTestAppTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-PsiphonReactNativeTestApp-PsiphonReactNativeTestAppTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
@@ -26,6 +31,20 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		4474894D2B1F794800ABCFA7 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				4474894C2B1F794800ABCFA7 /* PsiphonTunnel.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		00E356EE1AD99517003FC87E /* PsiphonReactNativeTestAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PsiphonReactNativeTestAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -38,6 +57,11 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = PsiphonReactNativeTestApp/main.m; sourceTree = "<group>"; };
 		19F6CBCC0A4E27FBF8BF4A61 /* libPods-PsiphonReactNativeTestApp-PsiphonReactNativeTestAppTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PsiphonReactNativeTestApp-PsiphonReactNativeTestAppTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B4392A12AC88292D35C810B /* Pods-PsiphonReactNativeTestApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PsiphonReactNativeTestApp.debug.xcconfig"; path = "Target Support Files/Pods-PsiphonReactNativeTestApp/Pods-PsiphonReactNativeTestApp.debug.xcconfig"; sourceTree = "<group>"; };
+		4474894A2B1F794700ABCFA7 /* PsiphonTunnel.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = PsiphonTunnel.xcframework; path = PsiphonReactNativeTestApp/PsiphonNativeModule/PsiphonTunnel.xcframework; sourceTree = "<group>"; };
+		447489502B1F7B8E00ABCFA7 /* PsiphonModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PsiphonModule.m; sourceTree = "<group>"; };
+		447489522B1F7BC000ABCFA7 /* PsiphonReactNativeTestApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PsiphonReactNativeTestApp-Bridging-Header.h"; sourceTree = "<group>"; };
+		447489532B1F7BC000ABCFA7 /* PsiphonNativeModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PsiphonNativeModule.swift; sourceTree = "<group>"; };
+		447489552B1F7BE200ABCFA7 /* PsiphonTunnelDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PsiphonTunnelDelegate.swift; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-PsiphonReactNativeTestApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PsiphonReactNativeTestApp.release.xcconfig"; path = "Target Support Files/Pods-PsiphonReactNativeTestApp/Pods-PsiphonReactNativeTestApp.release.xcconfig"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-PsiphonReactNativeTestApp-PsiphonReactNativeTestAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PsiphonReactNativeTestApp-PsiphonReactNativeTestAppTests.debug.xcconfig"; path = "Target Support Files/Pods-PsiphonReactNativeTestApp-PsiphonReactNativeTestAppTests/Pods-PsiphonReactNativeTestApp-PsiphonReactNativeTestAppTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-PsiphonReactNativeTestApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PsiphonReactNativeTestApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -60,6 +84,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0C80B921A6F3F58F76C31292 /* libPods-PsiphonReactNativeTestApp.a in Frameworks */,
+				4474894B2B1F794800ABCFA7 /* PsiphonTunnel.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -86,6 +111,7 @@
 		13B07FAE1A68108700A75B9A /* PsiphonReactNativeTestApp */ = {
 			isa = PBXGroup;
 			children = (
+				4474894F2B1F7AF600ABCFA7 /* PsiphonNativeModule */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -99,11 +125,23 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4474894A2B1F794700ABCFA7 /* PsiphonTunnel.xcframework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				5DCACB8F33CDC322A6C60F78 /* libPods-PsiphonReactNativeTestApp.a */,
 				19F6CBCC0A4E27FBF8BF4A61 /* libPods-PsiphonReactNativeTestApp-PsiphonReactNativeTestAppTests.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		4474894F2B1F7AF600ABCFA7 /* PsiphonNativeModule */ = {
+			isa = PBXGroup;
+			children = (
+				447489502B1F7B8E00ABCFA7 /* PsiphonModule.m */,
+				447489532B1F7BC000ABCFA7 /* PsiphonNativeModule.swift */,
+				447489522B1F7BC000ABCFA7 /* PsiphonReactNativeTestApp-Bridging-Header.h */,
+				447489552B1F7BE200ABCFA7 /* PsiphonTunnelDelegate.swift */,
+			);
+			path = PsiphonNativeModule;
 			sourceTree = "<group>";
 		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
@@ -184,6 +222,7 @@
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				00EEFC60759A1932668264C0 /* [CP] Embed Pods Frameworks */,
 				E235C05ADACE081382539298 /* [CP] Copy Pods Resources */,
+				4474894D2B1F794800ABCFA7 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -207,7 +246,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						LastSwiftMigration = 1120;
+						LastSwiftMigration = 1420;
 					};
 				};
 			};
@@ -413,6 +452,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
+				447489562B1F7BE200ABCFA7 /* PsiphonTunnelDelegate.swift in Sources */,
+				447489512B1F7B8E00ABCFA7 /* PsiphonModule.m in Sources */,
+				447489542B1F7BC000ABCFA7 /* PsiphonNativeModule.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -432,6 +474,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5B7EB9410499542E8C5724F5 /* Pods-PsiphonReactNativeTestApp-PsiphonReactNativeTestAppTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -459,6 +502,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 89C6BE57DB24E9ADA2F236DE /* Pods-PsiphonReactNativeTestApp-PsiphonReactNativeTestAppTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = PsiphonReactNativeTestAppTests/Info.plist;
@@ -486,6 +530,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = NO;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = PsiphonReactNativeTestApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -500,6 +545,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = PsiphonReactNativeTestApp;
+				STRIP_BITCODE_FROM_COPIED_FILES = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "PsiphonNativeModule/PsiphonReactNativeTestApp-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -513,6 +560,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = NO;
 				INFOPLIST_FILE = PsiphonReactNativeTestApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -526,6 +574,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = PsiphonReactNativeTestApp;
+				STRIP_BITCODE_FROM_COPIED_FILES = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "PsiphonNativeModule/PsiphonReactNativeTestApp-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

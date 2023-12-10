@@ -1,6 +1,9 @@
 #import "AppDelegate.h"
 
 #import <React/RCTBundleURLProvider.h>
+#import <React/RCTHTTPRequestHandler.h>
+
+#import "PsiphonReactNativeTestApp-Swift.h"
 
 @implementation AppDelegate
 
@@ -11,6 +14,10 @@
   // They will be passed down to the ViewController used by React Native.
   self.initialProps = @{};
 
+  RCTSetCustomNSURLSessionConfigurationProvider(^NSURLSessionConfiguration *{
+          return PsiphonTunnelDelegate.shared.getURLSessionConfiguration;
+      });
+  
   return [super application:application didFinishLaunchingWithOptions:launchOptions];
 }
 

@@ -31,14 +31,27 @@ const NewModuleButton = () => {
     setUsePsiphon(value);
     // Start or stop Psiphon right away on switch change
     if (value) {
-      try {
-        await PsiphonNativeModule.startPsiphon();
-      } catch (error) {
-        console.log(error);
-      }
+      // Load the config from the assets folder
+      // TODO: use fetch or a file reading library to load the config?
+      const config = require('./assets/psiphon_config.json');
+
+      // Start Psiphon with the config
+      startPsiphon(JSON.stringify(config));
     } else {
-      PsiphonNativeModule.stopPsiphon();
+      stopPsiphon();
     }
+  }
+
+  const startPsiphon = async (config: string) => {
+    try {
+      await PsiphonNativeModule.startPsiphon(config);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const stopPsiphon = () => {
+    PsiphonNativeModule.stopPsiphon();
   }
 
 
