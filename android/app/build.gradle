@@ -114,6 +114,15 @@ dependencies {
     } else {
         implementation jscFlavor
     }
+    // start Psiphon dependencies
+    // Psiphon lib
+    implementation files('libs/ca.psiphon.aar')
+
+    // RxJava
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.21'
+    implementation 'com.jakewharton.rxrelay2:rxrelay:2.1.1'
+    // end Psiphon dependencies
 }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)

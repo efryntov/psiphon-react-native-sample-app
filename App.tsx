@@ -1,118 +1,105 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import React, { useEffect, useState } from 'react';
+import { NativeModules, NativeEventEmitter, Button, Text, View, Switch, StyleSheet, ScrollView } from 'react-native';
 
-import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+const { PsiphonNativeModule } = NativeModules;
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+const NewModuleButton = () => {
+  const [psiphonConnectionStateText, setPsiphonConnectionStateText] = useState("UNKNOWN");
+  const [ipInfoData, setIpInfoData] = useState("IP info will be displayed here");
+  const [usePsiphon, setUsePsiphon] = useState(false);
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+  useEffect(() => {
+    const emitter = new NativeEventEmitter(PsiphonNativeModule);
+    const subscription = emitter.addListener('PsiphonConnectionState', (data) => {
+      console.log(data);
+      if (data && data.state)
+        setPsiphonConnectionStateText(data.state);
+    });
+  }, []);
 
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
+  const onPress = async () => {
+    setIpInfoData("Fetching IP info...");
 
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+    fetch("https://ipinfo.io/json").then((response) => response.text()).then((data) => {
+      setIpInfoData(data);
+    }).catch((error) => {
+      setIpInfoData("Error fetching IP info");
+    });
+  }
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+  const onSwitchChange = async (value: boolean) => {
+    setUsePsiphon(value);
+    // Start or stop Psiphon right away on switch change
+    if (value) {
+      // Load the config from the assets folder
+      // TODO: use fetch or a file reading library to load the config?
+      const config = require('./assets/psiphon_config.json');
+
+      // Start Psiphon with the config
+      startPsiphon(JSON.stringify(config));
+    } else {
+      stopPsiphon();
+    }
+  }
+
+  const startPsiphon = async (config: string) => {
+    try {
+      await PsiphonNativeModule.startPsiphon(config);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
+  const stopPsiphon = () => {
+    PsiphonNativeModule.stopPsiphon();
+  }
+
+
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
+    <View style={styles.container}>
+      <ScrollView style={styles.element}>
+        <Text>
+          {ipInfoData}
+        </Text>
       </ScrollView>
-    </SafeAreaView>
+      <View style={styles.element}>
+        <Button
+          title="Click to fetch IP info"
+          color="#841584"
+          onPress={onPress}
+        />
+      </View>
+      <View style={styles.element}>
+        <Text>
+          Tunnel State: {psiphonConnectionStateText}
+        </Text>
+      </View>
+      <View style={styles.element}>
+        <View style={{ flexDirection: "row" }}>
+          <Switch
+            value={usePsiphon}
+            onValueChange={onSwitchChange}
+          />
+          <Text>
+            Use Psiphon
+          </Text>
+        </View>
+      </View>
+    </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  container: {
+    flex: 1,
+    paddingHorizontal: 40,
+
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
+  element: {
+    padding: 20
+  }
 });
 
-export default App;
+export default NewModuleButton;

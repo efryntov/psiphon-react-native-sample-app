@@ -10,7 +10,11 @@ import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.load
 import com.facebook.react.defaults.DefaultReactHost.getDefaultReactHost
 import com.facebook.react.defaults.DefaultReactNativeHost
 import com.facebook.react.flipper.ReactNativeFlipper
+import com.facebook.react.modules.network.NetworkingModule
+import com.facebook.react.modules.websocket.WebSocketModule
 import com.facebook.soloader.SoLoader
+import com.psiphon.PsiphonHelper
+import com.psiphon.PsiphonPackage
 
 class MainApplication : Application(), ReactApplication {
 
@@ -19,7 +23,14 @@ class MainApplication : Application(), ReactApplication {
         override fun getPackages(): List<ReactPackage> {
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
-          return PackageList(this).packages
+
+          // Psiphon modification, add PsiphonPackage
+          // Note: make sure to add PsiphonPackage import
+          val packages = PackageList(this).packages
+          packages.add(PsiphonPackage())
+          // end Psiphon modification
+
+          return packages
         }
 
         override fun getJSMainModuleName(): String = "index"
@@ -41,5 +52,18 @@ class MainApplication : Application(), ReactApplication {
       load()
     }
     ReactNativeFlipper.initializeFlipper(this, reactNativeHost.reactInstanceManager)
+
+    // Psiphon modification
+    // Note: make sure to add PsiphonHelper import
+
+    // Provide custom http client builder to NetworkingModule and WebSocketModule to enable Psiphon proxying
+    val customClientBuilder = PsiphonHelper.getInstance(applicationContext).makePsiphonEnabledOkHttpClientBuilder()
+
+    // Set custom client builder for NetworkingModule and WebSocketModule
+    // Note: add NetworkingModule and WebSocketModule imports
+    NetworkingModule.setCustomClientBuilder(customClientBuilder);
+    WebSocketModule.setCustomClientBuilder(customClientBuilder);
+
+    // end Psiphon modification
   }
 }
