@@ -14,6 +14,9 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		44A096462B364DEA0058FFDE /* PsiphonTunnel.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44A096452B364DEA0058FFDE /* PsiphonTunnel.xcframework */; };
 		44A096472B364DEA0058FFDE /* PsiphonTunnel.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 44A096452B364DEA0058FFDE /* PsiphonTunnel.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		44A096662B36573D0058FFDE /* PsiphonNativeModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44A096632B36573D0058FFDE /* PsiphonNativeModule.swift */; };
+		44A096672B36573D0058FFDE /* PsiphonTunnelDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44A096642B36573D0058FFDE /* PsiphonTunnelDelegate.swift */; };
+		44A096682B36573D0058FFDE /* PsiphonNativeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 44A096652B36573D0058FFDE /* PsiphonNativeModule.m */; };
 		7699B88040F8A987B510C191 /* libPods-PsiphonDemoApp-PsiphonDemoAppTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-PsiphonDemoApp-PsiphonDemoAppTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
@@ -55,6 +58,10 @@
 		19F6CBCC0A4E27FBF8BF4A61 /* libPods-PsiphonDemoApp-PsiphonDemoAppTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PsiphonDemoApp-PsiphonDemoAppTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B4392A12AC88292D35C810B /* Pods-PsiphonDemoApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PsiphonDemoApp.debug.xcconfig"; path = "Target Support Files/Pods-PsiphonDemoApp/Pods-PsiphonDemoApp.debug.xcconfig"; sourceTree = "<group>"; };
 		44A096452B364DEA0058FFDE /* PsiphonTunnel.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = PsiphonTunnel.xcframework; path = Psiphon/PsiphonTunnel.xcframework; sourceTree = "<group>"; };
+		44A096622B36573C0058FFDE /* Psiphon-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Psiphon-Bridging-Header.h"; sourceTree = "<group>"; };
+		44A096632B36573D0058FFDE /* PsiphonNativeModule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PsiphonNativeModule.swift; sourceTree = "<group>"; };
+		44A096642B36573D0058FFDE /* PsiphonTunnelDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PsiphonTunnelDelegate.swift; sourceTree = "<group>"; };
+		44A096652B36573D0058FFDE /* PsiphonNativeModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PsiphonNativeModule.m; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-PsiphonDemoApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PsiphonDemoApp.release.xcconfig"; path = "Target Support Files/Pods-PsiphonDemoApp/Pods-PsiphonDemoApp.release.xcconfig"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-PsiphonDemoApp-PsiphonDemoAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PsiphonDemoApp-PsiphonDemoAppTests.debug.xcconfig"; path = "Target Support Files/Pods-PsiphonDemoApp-PsiphonDemoAppTests/Pods-PsiphonDemoApp-PsiphonDemoAppTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-PsiphonDemoApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PsiphonDemoApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -125,6 +132,17 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		44A0965F2B3656980058FFDE /* Psiphon */ = {
+			isa = PBXGroup;
+			children = (
+				44A096652B36573D0058FFDE /* PsiphonNativeModule.m */,
+				44A096632B36573D0058FFDE /* PsiphonNativeModule.swift */,
+				44A096642B36573D0058FFDE /* PsiphonTunnelDelegate.swift */,
+				44A096622B36573C0058FFDE /* Psiphon-Bridging-Header.h */,
+			);
+			path = Psiphon;
+			sourceTree = "<group>";
+		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
@@ -135,6 +153,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				44A0965F2B3656980058FFDE /* Psiphon */,
 				13B07FAE1A68108700A75B9A /* PsiphonDemoApp */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* PsiphonDemoAppTests */,
@@ -226,7 +245,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						LastSwiftMigration = 1120;
+						LastSwiftMigration = 1420;
 					};
 				};
 			};
@@ -412,8 +431,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				44A096672B36573D0058FFDE /* PsiphonTunnelDelegate.swift in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
+				44A096662B36573D0058FFDE /* PsiphonNativeModule.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				44A096682B36573D0058FFDE /* PsiphonNativeModule.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -432,6 +454,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5B7EB9410499542E8C5724F5 /* Pods-PsiphonDemoApp-PsiphonDemoAppTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -459,6 +482,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 89C6BE57DB24E9ADA2F236DE /* Pods-PsiphonDemoApp-PsiphonDemoAppTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = PsiphonDemoAppTests/Info.plist;
@@ -500,6 +524,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = PsiphonDemoApp;
+				SWIFT_OBJC_BRIDGING_HEADER = "Psiphon/Psiphon-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -526,6 +551,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = PsiphonDemoApp;
+				SWIFT_OBJC_BRIDGING_HEADER = "Psiphon/Psiphon-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
