@@ -1,4 +1,4 @@
-package com.psiphon;
+package ca.psiphon.nativemodule;
 
 import android.content.Context;
 import android.util.Log;
@@ -114,14 +114,19 @@ public class PsiphonHelper implements PsiphonTunnel.HostService {
         connectionStateBehaviorRelay.accept(PsiphonState.WAITING_FOR_NETWORK);
     }
 
-    void startPsiphon(String config) {
+    void startPsiphon(String config, PsiphonStartResultCallback resultCallback) {
         psiphonConfig = config;
         if (tunnelThread == null) {
             tunnelCountDownLatch = new CountDownLatch(1);
-            tunnelThread = new Thread(this::startPsiphonTunnel);
-            tunnelThread.setUncaughtExceptionHandler((thread, throwable) -> {
-                // rethrow as RuntimeException to be caught by the main thread
-                throw new RuntimeException(throwable);
+            tunnelThread = new Thread(() -> {
+                try {
+                    startPsiphonTunnel();
+                    resultCallback.onSuccess();
+                } catch (RuntimeException e) {
+                    resultCallback.onError(e);
+                    psiphonTunnel.stop();
+                    connectionStateBehaviorRelay.accept(PsiphonState.STOPPED);
+                }
             });
             tunnelThread.start();
         }
@@ -174,7 +179,7 @@ public class PsiphonHelper implements PsiphonTunnel.HostService {
                 Thread.currentThread().interrupt();
             }
         } catch (PsiphonTunnel.Exception e) {
-            // rethrow as RuntimeException to be caught by the calling thread exception handler
+            // rethrow as RuntimeException
             throw new RuntimeException(e);
         } finally {
             isPsiphonStopping.set(true);

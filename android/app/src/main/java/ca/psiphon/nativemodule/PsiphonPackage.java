@@ -1,4 +1,4 @@
-package com.psiphon;
+package ca.psiphon.nativemodule;
 
 import androidx.annotation.NonNull;
 

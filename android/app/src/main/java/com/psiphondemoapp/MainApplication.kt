@@ -13,8 +13,8 @@ import com.facebook.react.flipper.ReactNativeFlipper
 import com.facebook.react.modules.network.NetworkingModule
 import com.facebook.react.modules.websocket.WebSocketModule
 import com.facebook.soloader.SoLoader
-import com.psiphon.PsiphonHelper
-import com.psiphon.PsiphonPackage
+import ca.psiphon.nativemodule.PsiphonHelper
+import ca.psiphon.nativemodule.PsiphonPackage
 
 class MainApplication : Application(), ReactApplication {
 

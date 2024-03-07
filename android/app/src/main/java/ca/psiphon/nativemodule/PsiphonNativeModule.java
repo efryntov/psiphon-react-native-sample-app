@@ -1,6 +1,6 @@
-package com.psiphon;
+package ca.psiphon.nativemodule;
 
-import static com.psiphon.PsiphonHelper.PsiphonState;
+import static ca.psiphon.nativemodule.PsiphonHelper.PsiphonState;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -41,10 +41,21 @@ public class PsiphonNativeModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public synchronized void startPsiphon(String config, Promise promise) {
+        PsiphonStartResultCallback errorCallback = new PsiphonStartResultCallback() {
+            @Override
+            public void onSuccess() {
+                promise.resolve(null);
+            }
+
+            @Override
+            public void onError(Exception e) {
+                promise.reject(e);
+            }
+        };
         try {
-            psiphonHelper.startPsiphon(config);
-            promise.resolve(null);
+            psiphonHelper.startPsiphon(config, errorCallback);
         } catch (RuntimeException e) {
+            // This catch is for synchronous errors; asynchronous ones are handled by the callback.
             promise.reject(e);
         }
     }
