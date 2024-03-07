@@ -15,6 +15,11 @@ const NewModuleButton = () => {
       if (data && data.state)
         setPsiphonConnectionStateText(data.state);
     });
+  
+    // Cleanup function to unsubscribe
+    return () => {
+      subscription.remove();
+    };
   }, []);
 
   const onPress = async () => {
