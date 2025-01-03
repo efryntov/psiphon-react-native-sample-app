@@ -18,6 +18,8 @@
     return PsiphonTunnelDelegate.shared.getURLSessionConfiguration;
   });
 
+  [PsiphonTunnelDelegate.shared setBridge:self.bridge];
+
   return [super application:application didFinishLaunchingWithOptions:launchOptions];
 }
 

@@ -5,3 +5,4 @@
 #import "React/RCTBridgeModule.h"
 #import "React/RCTEventEmitter.h"
 #import "PsiphonTunnel/PsiphonTunnel.h"
+#import "React/RCTHTTPRequestHandler.h"

@@ -28,6 +28,13 @@ class PsiphonTunnelDelegate: NSObject, TunneledAppDelegate {
         super.init()
     }
 
+    private weak var bridge: RCTBridge?
+
+    @objc
+    func setBridge(_ bridge: RCTBridge) {
+        self.bridge = bridge
+    }
+
     // MARK: - TunneledAppDelegate methods
 
     func getPsiphonConfig() -> Any? {
@@ -42,6 +49,18 @@ class PsiphonTunnelDelegate: NSObject, TunneledAppDelegate {
         queue.async(flags: .barrier) {
             self.currentConnectionState = newState
             self.connectionStateListener?(newState)
+
+            // Reset cached config
+            self.cachedURLSessionConfiguration = nil
+
+            // Reset handler on every state change
+            if let bridge = self.bridge {
+                if let handler = bridge.module(for: RCTHTTPRequestHandler.self) as? RCTHTTPRequestHandler {
+                    handler.setValue(nil, forKey: "_session")
+                    handler.setValue(nil, forKey: "_delegates")
+                }
+            }
+
             self.stateChangeSemaphore.signal()
         }
     }
@@ -132,7 +151,7 @@ class PsiphonTunnelDelegate: NSObject, TunneledAppDelegate {
 
     // Method to create a URLSessionConfiguration based on the current connection state
     private func createURLSessionConfiguration(for state: PsiphonConnectionState) -> URLSessionConfiguration? {
-        var config = URLSessionConfiguration.default
+        let config = URLSessionConfiguration.default
         config.httpShouldSetCookies = true
         config.httpCookieAcceptPolicy = .always
         config.httpCookieStorage = HTTPCookieStorage.shared

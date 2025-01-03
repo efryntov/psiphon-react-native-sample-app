@@ -29,6 +29,7 @@ const NewModuleButton = () => {
       setIpInfoData(data);
     }).catch((error) => {
       setIpInfoData("Error fetching IP info");
+      console.log(error)
     });
   }
 
