@@ -13,18 +13,9 @@
         Method originalMethod = class_getInstanceMethod(class, originalSelector);
         Method swizzledMethod = class_getInstanceMethod(class, swizzledSelector);
 
+        NSAssert(originalMethod, @"Original method _configureProxy not found - implementation likely changed");
 
-        BOOL didAddMethod = class_addMethod(class, originalSelector,
-                                            method_getImplementation(swizzledMethod),
-                                            method_getTypeEncoding(swizzledMethod));
-
-        if (didAddMethod) {
-            class_replaceMethod(class, swizzledSelector,
-                                method_getImplementation(originalMethod),
-                                method_getTypeEncoding(originalMethod));
-        } else {
-            method_exchangeImplementations(originalMethod, swizzledMethod);
-        }
+        method_exchangeImplementations(originalMethod, swizzledMethod);
     });
 }
 
@@ -77,9 +68,5 @@
     // Call original implementation
     ((void(*)(id, SEL))objc_msgSend)(self, @selector(psiphon_configureProxy));
 }
-
-
-
-
 
 @end
