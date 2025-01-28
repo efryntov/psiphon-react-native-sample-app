@@ -143,6 +143,11 @@ public class PsiphonHelper implements PsiphonTunnel.HostService {
         return builder -> builder.proxySelector(new ProxySelector() {
             @Override
             public List<Proxy> select(URI uri) {
+                // Always bypass proxy for localhost/loopback addresses
+                if (isLocalhost(uri.getHost())) {
+                    return List.of(Proxy.NO_PROXY);
+                }
+
                 return getConnectionStateObservable()
                         .observeOn(Schedulers.io())
                         .switchMap(state -> {
@@ -159,6 +164,12 @@ public class PsiphonHelper implements PsiphonTunnel.HostService {
                         })
                         .firstOrError()
                         .blockingGet();
+            }
+
+            private boolean isLocalhost(String host) {
+                return host.equalsIgnoreCase("localhost") ||
+                        host.equals("127.0.0.1") ||
+                        host.equals("::1");
             }
 
             @Override

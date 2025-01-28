@@ -192,9 +192,10 @@ class PsiphonTunnelDelegate: NSObject, TunneledAppDelegate {
     // we can wait for proxy config here because we control the connection flow through swizzling
     @objc
     func getProxyConfig(_ url: URL?, completion: @escaping (NSDictionary?) -> Void) {
+        // Always bypass proxy for localhost/loopback addresses
         if let url = url,
-           let host = url.host?.lowercased(),
-           host == "localhost" || host == "127.0.0.1" {
+           let host = url.host,
+           isLocalhost(host) {
             completion(nil)
             return
         }
@@ -234,5 +235,12 @@ class PsiphonTunnelDelegate: NSObject, TunneledAppDelegate {
                 self.stateChangeSemaphore.wait()
             }
         }
+    }
+
+    private func isLocalhost(_ host: String) -> Bool {
+        let lowercased = host.lowercased()
+        return lowercased == "localhost" ||
+               lowercased == "127.0.0.1" ||
+               lowercased == "::1"
     }
 }
