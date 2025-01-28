@@ -6,6 +6,7 @@ const { PsiphonNativeModule } = NativeModules;
 const NewModuleButton = () => {
   const [psiphonConnectionStateText, setPsiphonConnectionStateText] = useState("UNKNOWN");
   const [ipInfoData, setIpInfoData] = useState("IP info will be displayed here");
+  const [wsData, setWsData] = useState("WebSocket data will be displayed here");
   const [usePsiphon, setUsePsiphon] = useState(false);
 
   useEffect(() => {
@@ -22,7 +23,7 @@ const NewModuleButton = () => {
     };
   }, []);
 
-  const onPress = async () => {
+  const onPress = async () => {``
     setIpInfoData("Fetching IP info...");
 
     fetch("https://ipinfo.io/json").then((response) => response.text()).then((data) => {
@@ -33,6 +34,38 @@ const NewModuleButton = () => {
     });
   }
 
+  const onWebSocketTest = async () => {
+    setWsData("Testing WebSocket...");
+    
+    try {
+      const ws = new WebSocket('wss://webhook.site/6308a4b0-67f9-4de0-bc2a-a8143f020195');
+      
+      ws.onopen = () => {
+        ws.send('Hello, WebSocket!');
+        console.log('WebSocket connection opened');
+        setWsData("WebSocket connected, awaiting info...");
+      };
+  
+      ws.onmessage = (event) => {
+        console.log('Received message:', event.data);
+        setWsData(`Received: ${event.data}`); 
+      };
+  
+      ws.onerror = (error) => {
+        console.log('WebSocket error:', error);
+        setWsData('WebSocket error occurred');
+      };
+  
+      ws.onclose = (event) => {
+        console.log('WebSocket closed:', event.code, event.reason);
+        setWsData('WebSocket connection closed');
+      };
+    } catch (error) {
+      console.error('Error:', error);
+      setWsData(`Error: ${error.message}`);
+    }
+  }
+  
   const onSwitchChange = async (value: boolean) => {
     setUsePsiphon(value);
     // Start or stop Psiphon right away on switch change
@@ -60,12 +93,14 @@ const NewModuleButton = () => {
     PsiphonNativeModule.stopPsiphon();
   }
 
-
   return (
     <View style={styles.container}>
       <ScrollView style={styles.element}>
         <Text>
           {ipInfoData}
+        </Text>
+        <Text style={styles.separator}>
+          {wsData}
         </Text>
       </ScrollView>
       <View style={styles.element}>
@@ -73,6 +108,13 @@ const NewModuleButton = () => {
           title="Click to fetch IP info"
           color="#841584"
           onPress={onPress}
+        />
+      </View>
+      <View style={styles.element}>
+        <Button
+          title="Test WebSocket"
+          color="#008080"
+          onPress={onWebSocketTest}
         />
       </View>
       <View style={styles.element}>
@@ -99,12 +141,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 40,
-
     alignItems: 'center',
     justifyContent: 'center',
   },
   element: {
     padding: 20
+  },
+  separator: {
+    marginTop: 20,
+    paddingTop: 20,
+    borderTopWidth: 1,
+    borderTopColor: '#ccc'
   }
 });
 

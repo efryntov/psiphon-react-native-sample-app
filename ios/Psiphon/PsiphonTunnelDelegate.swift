@@ -18,7 +18,10 @@ class PsiphonTunnelDelegate: NSObject, TunneledAppDelegate {
     private var currentConnectionState: PsiphonConnectionState = .disconnected
     private let stateChangeSemaphore = DispatchSemaphore(value: 0)
 
+    // Cached URLSession config for the HTTP requests for current tunnel state
     private var cachedURLSessionConfiguration: URLSessionConfiguration?
+    // Cached proxy config for WebSocket API for current tunnel state
+    private var cachedProxyConfig: [String: Any]?
 
     private var connectionStateListener: ((PsiphonConnectionState) -> Void)?
 
@@ -26,6 +29,7 @@ class PsiphonTunnelDelegate: NSObject, TunneledAppDelegate {
 
     override private init() {
         super.init()
+        NSLog("PsiphonTunnelDelegate class name: %@", NSStringFromClass(type(of: self)))
     }
 
     private weak var bridge: RCTBridge?
@@ -50,8 +54,9 @@ class PsiphonTunnelDelegate: NSObject, TunneledAppDelegate {
             self.currentConnectionState = newState
             self.connectionStateListener?(newState)
 
-            // Reset cached config
+            // Reset cached configs
             self.cachedURLSessionConfiguration = nil
+            self.cachedProxyConfig = nil
 
             // Reset handler on every state change
             if let bridge = self.bridge {
@@ -127,6 +132,8 @@ class PsiphonTunnelDelegate: NSObject, TunneledAppDelegate {
     // Method to get the URLSessionConfiguration to be used for making network requests
     // This method will block until the configuration becomes available which will happen
     // when the tunnel reaches the connected or disconnected state.
+    // This has to be synchronous because React Native's networking layer expects
+    // an immediate configuration return
     @objc
     func getURLSessionConfiguration() -> URLSessionConfiguration? {
         if let cachedConfig = cachedURLSessionConfiguration {
@@ -149,7 +156,7 @@ class PsiphonTunnelDelegate: NSObject, TunneledAppDelegate {
         return config
     }
 
-    // Method to create a URLSessionConfiguration based on the current connection state
+    // Method to create a URLSessionConfiguration based on the current connection state, 
     private func createURLSessionConfiguration(for state: PsiphonConnectionState) -> URLSessionConfiguration? {
         let config = URLSessionConfiguration.default
         config.httpShouldSetCookies = true
@@ -169,5 +176,63 @@ class PsiphonTunnelDelegate: NSObject, TunneledAppDelegate {
         }
 
         return config
+    }
+
+    // Method to provide proxy configuration for WebSocket connections via SocketRocket's _configureProxy
+    // The completion handler must be called with:
+    // - nil: when no proxy should be used (localhost or disconnected state)
+    // - proxy config: when SOCKS proxy should be used (connected state)
+    //
+    // This can use a completion handler because our swizzled _configureProxy method controls the flow:
+    // 1. Gets proxy config asynchronously through this method
+    // 2. In completion: sets up proxy via _readProxySettingWithType:settings: if needed
+    // 3. In completion: calls _openConnection to proceed
+    //
+    // Unlike URLSession configuration which must return immediately for RN's networking layer,
+    // we can wait for proxy config here because we control the connection flow through swizzling
+    @objc
+    func getProxyConfig(_ url: URL?, completion: @escaping (NSDictionary?) -> Void) {
+        if let url = url,
+           let host = url.host?.lowercased(),
+           host == "localhost" || host == "127.0.0.1" {
+            completion(nil)
+            return
+        }
+
+        if let cachedConfig = cachedProxyConfig {
+            completion(cachedConfig as NSDictionary)
+            return
+        }
+
+        DispatchQueue.global(qos: .userInitiated).async {
+            while true {
+                var shouldBreak = false
+                self.queue.sync {
+                    switch self.currentConnectionState {
+                    case .connected:
+                        let config: [String: Any] = [
+                            kCFProxyTypeKey as String: kCFProxyTypeSOCKS as String,
+                            kCFProxyHostNameKey as String: "127.0.0.1",
+                            kCFProxyPortNumberKey as String: NSNumber(value: self.socksProxyPort)
+                        ]
+                        self.cachedProxyConfig = config
+                        completion(config as NSDictionary)
+                        shouldBreak = true
+                    case .disconnected:
+                        self.cachedProxyConfig = nil
+                        completion(nil)
+                        shouldBreak = true
+                    default:
+                        break
+                    }
+                }
+
+                if shouldBreak {
+                    break
+                }
+
+                self.stateChangeSemaphore.wait()
+            }
+        }
     }
 }
